@@ -32,3 +32,5 @@ pertenece(E,G) :- es_un(E,Inter), pertenece(Inter,G).
 % ej: Adith toma 1.85 no 1.80
 hereda(E, Atr, Val) :- atributo(E, Atr, Val).
 hereda(E, Atr, Val) :- pertenece(E,G) ,atributo(G, Atr, Val), !.
+
+% TODO: agregar caso ampliado con equipos
