@@ -7,8 +7,18 @@ es_un(delantero,futbolista).
 
 
 % Adith --instancia de--> Defensa
-instancia_de(adith, defensa).
-instancia_de(miguel,delantero).
+instancia_de(radamel_falcao, delantero).
+instancia_de(dairon_mosquera,defensa).
+instancia_de(isabella_amado, defensa).
+% Equipos de futbol
+instancia_de(millonarios,equipo).
+instancia_de(union_magdalena,equipo).
+instancia_de(atletico_cafeteros,equipo).
+instancia_de(millonarios,equipo).
+% Ligas de futbol
+instancia(categoria_a,liga).
+instancia(categoria_b,liga).
+instancia(femenina,liga).
 
 % Persona --pie habil--> Derecho
 atributo(persona, pie_habil, derecho).
@@ -17,6 +27,7 @@ atributo(futbolista, altura, 1.85).
 atributo(futbolista, num_goles, 3).
 atributo(futbolista, patea, balon).
 atributo(defensa,num_goles,1).
+% Equipos
 
 
 % Reglas
