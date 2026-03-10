@@ -1,4 +1,4 @@
-%Base de Hechos
+% Base de Hechos
 % Hombre adulto --es una--> Persona
 es_un(hombre_adulto, persona).
 es_un(futbolista, hombre_adulto).
@@ -21,14 +21,20 @@ instancia(categoria_b,liga).
 instancia(femenina,liga).
 
 % Persona --pie habil--> Derecho
-atributo(persona, pie_habil, derecho).
-atributo(hombre_adulto, altura, 1.80).
-atributo(futbolista, altura, 1.85).
-atributo(futbolista, num_goles, 3).
-atributo(futbolista, patea, balon).
+atributo(persona,pie_habil,derecho).
+atributo(hombre_adulto,altura,1.80).
+atributo(futbolista,altura,1.85).
+atributo(futbolista,num_goles,3).
+atributo(futbolista,patea,balon).
 atributo(defensa,num_goles,1).
-% Equipos
-
+% Asignar equipos a futbolistas
+atributo(radamel_falcao,equipo,millonarios).
+atributo(dairon_mosquera,equipo,union_magdalena).
+atributo(isabella_amado,equipo,millonarios).
+% Asignar ligas a equipos
+atributo(millonarios,liga,categoria_a).
+atributo(millonarios,liga,femenina).
+atributo(union_magdalena,liga,categoria_b).
 
 % Reglas
 % Pertenece: de instancia especifica a conjunto general
