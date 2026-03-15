@@ -21,6 +21,7 @@ atributo(delantero, num_goles, 5).
 
 % Asignar equipos a futbolistas
 atributo(adith, equipo, millonarios).
+atributo(miguel, equipo, nacional).
 
 % Reglas
 % Pertenece: de instancia especifica a conjunto general
