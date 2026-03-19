@@ -1,33 +1,32 @@
-% Base de Hechos
-% Hombre adulto --es una--> Persona
+% BASE DE CONOCIMIENTOS - RED SEMANTICA
+
+% 1. RELACIONES DE JERARQUIA GENERAL (es_un)
+
+% Jerarquia de personas
 es_un(hombre_adulto, persona).
 es_un(jugador_de_futbol, hombre_adulto).
 es_un(defensa, jugador_de_futbol).
 es_un(delantero, jugador_de_futbol).
 
-/*
-% Adith --instancia de--> Defensa
-instancia_de(carlos_mario_zuluaga, hombre_adulto).
-instancia_de(radamel_falcao, delantero).
-instancia_de(dairon_mosquera,defensa).
-instancia_de(isabella_amado, defensa).
-% Equipos de futbol
-instancia_de(millonarios,equipo).
-instancia_de(union_magdalena,equipo).
-instancia_de(atletico_cafeteros,equipo).
-instancia_de(millonarios,equipo).
-instancia_de(manuel,hombre_adulto).
-% Ligas de futbol
-instancia(categoria_a,liga).
-instancia(categoria_b,liga).
-instancia(femenina,liga).
-*/
-% Adith --instancia de--> Defensa (Cambiado de Falcao/Isabella a Adith)
+% Jerarquia de Organizaciones Deportivas (Nueva Rama)
+es_un(club_de_futbol, organizacion_deportiva).
+es_un(equipo_profesional, club_de_futbol).
+
+
+% 2. RELACIONES DE INSTANCIACION (instancia_de)
+
+% Instancias de personas
 instancia_de(adith, defensa).
-% Miguel --instancia de--> Delantero (Cambiado de Mosquera a Miguel)
 instancia_de(miguel, delantero).
 
-% Persona --pie habil--> Derecho
+% Instancias de equipos profesionales (Nodos finales de la nueva rama)
+instancia_de(millonarios, equipo_profesional).
+instancia_de(nacional, equipo_profesional).
+
+
+% 3. ASIGNACION DE CARACTERISTICAS (atributo)
+
+% Atributos de la rama de personas
 atributo(persona, pie_habil, derecho).
 atributo(hombre_adulto, altura, 1.80).
 atributo(jugador_de_futbol, altura, 1.85).
@@ -36,35 +35,36 @@ atributo(jugador_de_futbol, patea, balon).
 atributo(defensa, num_goles, 1).
 atributo(delantero, num_goles, 5).
 
-% Asignar equipos a futbolistas
-/*
-atributo(radamel_falcao,equipo,millonarios).
-atributo(dairon_mosquera,equipo,union_magdalena).
-atributo(isabella_amado,equipo,millonarios).
-% Asignar ligas a equipos
-atributo(union_magdalena,liga,categoria_b).
-atributo(categoria_a,presidente,carlos_mario_zuluaga).
-*/
-atributo(millonarios,liga,categoria_a).
-atributo(millonarios,liga,femenina).
+% Atributos de la rama de organizaciones deportivas
+atributo(club_de_futbol, deporte_practicado, balompie).
+atributo(equipo_profesional, necesita_estadio, si).
+atributo(equipo_profesional, gana, 200000).
+
+% Atributos de relacion (Conectan a las personas con sus equipos)
 atributo(adith, equipo, millonarios).
 atributo(miguel, equipo, nacional).
 
-% Reglas
-% Pertenece: de instancia especifica a conjunto general
+
+% REGLAS
+
+% Regla de pertenencia: Permite escalar desde un individuo concreto 
+% hacia las categorias generales a las que pertenece
 pertenece(E, G) :- instancia_de(E, G).
 pertenece(E, G) :- instancia_de(E, Inter), pertenece(Inter, G).
 
-% Pertenece: de subconjunto especifico a conjunto general
+% Regla de pertenencia: Permite escalar entre subconjuntos
 pertenece(E, G) :- es_un(E, G).
 pertenece(E, G) :- es_un(E, Inter), pertenece(Inter, G).
 
-% Busca el atributo del conjunto que esta inmediatemente sobre el
-% ej: Adith toma 1.85 no 1.80
+% Regla de herencia: Busca el atributo solicitado. Si no lo encuentra 
+% en el elemento consultado, asciende por la red buscando en las 
+% categorías superiores. El operador de corte (!) detiene la búsqueda 
+% al encontrar la primera coincidencia (para sobreescritura).
 hereda(E, Atr, Val) :- atributo(E, Atr, Val).
-hereda(E, Atr, Val) :- pertenece(E,G) ,atributo(G, Atr, Val), !.
+hereda(E, Atr, Val) :- pertenece(E, G), atributo(G, Atr, Val), !.
 
-% Tiene Atributo, buscar si alguno tiene ese valor
-extiende_atr(E,Atr,Val) :- atributo(E, Atr, Val).
-extiende_atr(E,Atr,Val) :- atributo(E, _, G), extiende_atr(G,Atr,Val).
-
+% Regla de extension: Permite encadenar relaciones para descubrir 
+% atributos indirectos
+extiende(E, Atr, Val) :- atributo(E, Atr, Val).
+extiende(E, Atr, Val) :- atributo(E, _, G), extiende(G, Atr, Val).
+extiende(E, Atr, Val) :- atributo(E, _, G), hereda(G, Atr, Val).
